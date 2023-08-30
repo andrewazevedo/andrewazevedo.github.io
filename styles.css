@@ -1,0 +1,54 @@
+body {
+    background-color: rgb(39, 39, 39);
+}
+img {
+    width: 120px; 
+    height: auto;
+}
+
+h1 {
+    color: rgb(150, 0, 0);
+    font-size: 50px;
+    margin: 0;
+    font-family: Copperplate;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#userDeck, #cpuDeck {
+    background-color: rgb(106, 106, 106);
+    min-height: 200px;
+    width: 90%;
+    height: auto;
+    margin-right: auto;
+    margin-left: auto;
+    border: 5px solid rgb(150, 0, 0);
+}
+
+#feedback {
+    background-color: rgb(150, 0, 0);
+    font-family: Copperplate;
+    height: 30px;
+    width: 90%;
+    margin: auto;
+    border: 5px solid rgb(150, 0, 0);
+    text-align: center;
+    line-height: 0px;
+    font-size: 25px;
+}
+
+#scoreboard {
+    background-color: rgb(106, 106, 106);
+    text-align: center;
+    width: 75%;
+    margin-right: auto;
+    margin-left: auto;
+    border: 5px solid rgb(150, 0, 0);
+    font-family: Copperplate;
+    font-size: 25px;
+}
