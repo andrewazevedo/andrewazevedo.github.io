@@ -46,6 +46,7 @@ function userTurn(card) {
     let found = false; 
     let fullUserCard = card.split("-");
     let userValue = fullUserCard[0];
+    console.log("User guess: " + userValue);
     for (let i = 0; i < cpuDeck.length; i++) {
         let fullCpuCard = cpuDeck[i].split("-");
         let cpuValue = fullCpuCard[0];
@@ -76,6 +77,8 @@ function userTurn(card) {
         userCardImg.src = "./Cards/" + newCard + ".png";
         document.getElementById("userDeck").append(userCardImg);
     }
+    console.log("User: " + userDeck);
+    console.log("Cpu: " + cpuDeck);
     setTimeout(cpuTurn, 1500);
 }
 
@@ -85,6 +88,7 @@ function cpuTurn() {
     let cpuGuess = cpuDeck[index];
     let fullCpuValue = cpuGuess.split("-");
     let cpuValue = fullCpuValue[0];
+    console.log("Cpu guess: " + cpuValue);
     for (let i = 0; i < userDeck.length; i++) {
         let fullUserValue = userDeck[i].split("-");
         let userValue = fullUserValue[0];
@@ -113,6 +117,8 @@ function cpuTurn() {
         cpuCardImg.src = "./Cards/hidden.png";
         document.getElementById("cpuDeck").append(cpuCardImg);
     }
+    console.log("User: " + userDeck);
+    console.log("Cpu: " + cpuDeck);
     isUserTurn = true;
 }
 
@@ -121,6 +127,8 @@ function main(card) {
         buildDeck();
         shuffleDeck();
         assignCards();
+        console.log("User: " + userDeck);
+        console.log("Cpu: " + cpuDeck);
         gameStart = false;
     } else if (isUserTurn) {
         userTurn(card);
