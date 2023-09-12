@@ -1,8 +1,11 @@
 let deck = [];
 let userDeck = [];
 let cpuDeck = [];
+let userBooks = 0;
+let cpuBooks = 0;
 let gameStart = true;
 let isUserTurn = true;
+let turn = "user";
 
 function buildDeck() {
     let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -67,8 +70,8 @@ function userTurn(card) {
 
     if (found) {
         document.getElementById("feedback-text").innerHTML = "You Found a Match of " + userValue + "'s";
+        setTimeout(checkUserBooks, 3000);
     } else {
-        document.getElementById("feedback-text").innerHTML = "Go Fish. You guessed " + userValue;
         let newCard = deck.pop();
         userDeck.push(newCard);
         let userCardImg = document.createElement("img");
@@ -76,10 +79,19 @@ function userTurn(card) {
         userCardImg.addEventListener("click", function(){main(newCard);});
         userCardImg.src = "./Cards/" + newCard + ".png";
         document.getElementById("userDeck").append(userCardImg);
+        let pickedCard = newCard.split("-");
+        let pickedValue = pickedCard[0];
+        if (pickedValue === userValue) {
+            document.getElementById("feedback-text").innerHTML = "Go Fish. You Guessed " + userValue + " But Found a Match in the Pile!";
+            setTimeout(checkUserBooks, 3000);
+        } else {
+            document.getElementById("feedback-text").innerHTML = "Go Fish. You Guessed " + userValue;
+            turn = "cpu";
+            setTimeout(checkUserBooks, 3000);
+        }
     }
     console.log("User: " + userDeck);
     console.log("Cpu: " + cpuDeck);
-    setTimeout(cpuTurn, 1500);
 }
 
 function cpuTurn() {
@@ -107,19 +119,116 @@ function cpuTurn() {
     }
 
     if (found) {
-        document.getElementById("feedback-text").innerHTML = "Oh No! The CPU Found a Match of " + cpuValue + "'s"
+        document.getElementById("feedback-text").innerHTML = "Oh No! The CPU Found a Match of " + cpuValue + "'s";
+        setTimeout(checkCpuBooks, 3000);
     } else {
-        document.getElementById("feedback-text").innerHTML = "CPU Went Fishihng After Guessing " + cpuValue;
         let newCard = deck.pop();
         cpuDeck.push(newCard);
         let cpuCardImg = document.createElement("img");
         cpuCardImg.setAttribute("id", newCard);
         cpuCardImg.src = "./Cards/hidden.png";
         document.getElementById("cpuDeck").append(cpuCardImg);
+        let pickedCard = newCard.split("-");
+        let pickedValue = pickedCard[0];
+        if (pickedValue === cpuValue) {
+            document.getElementById("feedback-text").innerHTML = "CPU Went Fishing After Guessing " + cpuValue + " But Found A Match in the Pile.";
+            setTimeout(checkCpuBooks, 3000);
+        } else {
+            document.getElementById("feedback-text").innerHTML = "CPU Went Fishing After Guessing " + cpuValue;
+            turn = "user";
+            setTimeout(checkCpuBooks, 3000);
+        }
     }
     console.log("User: " + userDeck);
     console.log("Cpu: " + cpuDeck);
-    isUserTurn = true;
+}
+
+function checkUserBooks() {
+    let bookFound = false;
+    for (let i = 0; i < userDeck.length; i++) {
+        let userCard1 = userDeck[i];
+        let fullUserValue1 = userCard1.split("-");
+        let userValue1 = fullUserValue1[0];
+        let indexArray = [i];
+        for (let j = 0; j < userDeck.length; j++) {
+            let userCard2 = userDeck[j];
+            let fullUserValue2 = userCard2.split("-");
+            let userValue2 = fullUserValue2[0];
+            if (i !== j && userValue1 === userValue2) {
+                indexArray.push(j);
+            }
+        }
+        if (indexArray.length === 4) {
+            bookFound = true;
+            userBooks++;
+            document.getElementById("user-score").innerHTML = userBooks;
+            document.getElementById("feedback-text").innerHTML = "You Made a Book of " + userValue1 + "'s!";
+            for (let j = indexArray.length - 1; j >= 0; j--) {
+                let userCardImg = document.getElementById(userDeck[indexArray[j]]);
+                userCardImg.remove();
+                userDeck.splice(indexArray[j], 1);
+            }
+        }
+    }
+
+    if (bookFound) {
+        if (turn === "user") {
+            setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+        } else if (turn === "cpu") {
+            setTimeout(cpuTurn, 3000);
+        }
+    } else {
+        if (turn === "user") {
+            document.getElementById("feedback-text").innerHTML = "Your Turn!";
+            isUserTurn = true;
+        } else if (turn = "cpu") {
+            cpuTurn();
+        }
+    }
+}
+
+function checkCpuBooks() {
+    let bookFound = false;
+    for (let i = 0; i < cpuDeck.length; i++) {
+        let cpuCard1 = cpuDeck[i];
+        let fullCpuValue1 = cpuCard1.split("-");
+        let cpuValue1 = fullCpuValue1[0];
+        let indexArray = [i];
+        for (let j = 0; j < cpuDeck.length; j++) {
+            let cpuCard2 = cpuDeck[j];
+            let fullCpuValue2 = cpuCard2.split("-");
+            let cpuValue2 = fullCpuValue2[0];
+            if (i !== j && cpuValue1 === cpuValue2) {
+                indexArray.push(j);
+            }
+        }
+        if (indexArray.length === 4) {
+            bookFound = true;
+            cpuBooks++;
+            document.getElementById("cpu-score").innerHTML = cpuBooks;
+            document.getElementById("feedback-text").innerHTML = "Oh No! The CPU Made a Book of " + cpuValue1 + "'s";
+            for (let j = indexArray.length - 1; j >= 0; j--) {
+                let cpuCardImg = document.getElementById(cpuDeck[indexArray[j]]);
+                cpuCardImg.remove();
+                cpuDeck.splice(indexArray[j], 1);
+            }
+        }
+    }
+    
+    if (bookFound) {
+        if (turn === "user") {
+            setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+        } else if (turn === "cpu") {
+            setTimeout(cpuTurn, 3000);
+        }
+    } else {
+        if (turn === "user") {
+            document.getElementById("feedback-text").innerHTML = "Your Turn!";
+            isUserTurn = true;
+        } else if (turn = "cpu") {
+            cpuTurn();
+        }
+    }
 }
 
 function main(card) {
