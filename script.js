@@ -5,6 +5,7 @@ let userBooks = 0;
 let cpuBooks = 0;
 let gameStart = true;
 let isUserTurn = true;
+let gameOver = false;
 let turn = "user";
 
 function buildDeck() {
@@ -170,19 +171,47 @@ function checkUserBooks() {
             }
         }
     }
-
+    
+    checkGameEnd();
     if (bookFound) {
         if (turn === "user") {
-            setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+            if (gameOver) {
+                checkWinner();
+            } else {
+                if (userDeck.length <= 0) {
+                    let newCard = deck.pop();
+                    userDeck.push(newCard);
+                    let userCardImg = document.createElement("img");
+                    userCardImg.setAttribute("id", newCard);
+                    userCardImg.addEventListener("click", function(){main(newCard);});
+                    userCardImg.src = "./Cards/" + newCard + ".png";
+                    document.getElementById("userDeck").append(userCardImg);
+                    document.getElementById("feedback-text").innerHTML = "You Went Fishing Because You Had No Cards.";
+                } else {
+                    setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+                }
+            }
         } else if (turn === "cpu") {
-            setTimeout(cpuTurn, 3000);
+            if (gameOver) {
+                checkWinner();
+            } else {
+                setTimeout(cpuTurn, 3000);
+            }
         }
     } else {
         if (turn === "user") {
-            document.getElementById("feedback-text").innerHTML = "Your Turn!";
-            isUserTurn = true;
+            if (gameOver) {
+                checkWinner();
+            } else {
+                document.getElementById("feedback-text").innerHTML = "Your Turn!";
+                isUserTurn = true;
+            }
         } else if (turn = "cpu") {
-            cpuTurn();
+            if (gameOver) {
+                checkWinner();
+            } else {
+                cpuTurn();
+            }
         }
     }
 }
@@ -214,20 +243,60 @@ function checkCpuBooks() {
             }
         }
     }
-    
+
+    checkGameEnd();
     if (bookFound) {
         if (turn === "user") {
-            setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+            if (gameOver) {
+                checkWinner();
+            } else {
+                
+                setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+            }
         } else if (turn === "cpu") {
-            setTimeout(cpuTurn, 3000);
+            if (gameOver) {
+                checkWinner();
+            } else {
+                setTimeout(cpuTurn, 3000);
+            }
         }
     } else {
         if (turn === "user") {
-            document.getElementById("feedback-text").innerHTML = "Your Turn!";
-            isUserTurn = true;
+            if (gameOver) {
+                checkWinner();
+            } else {
+                document.getElementById("feedback-text").innerHTML = "Your Turn!";
+                isUserTurn = true;
+            }
         } else if (turn = "cpu") {
-            cpuTurn();
+            if (gameOver) {
+                checkWinner();
+            } else {
+                cpuTurn();
+            }
         }
+    }
+}
+
+function checkGameEnd() {
+    if (userDeck.length <= 0 && turn == "user") {
+        gameOver = true;
+    } else if (cpuDeck.length <= 0 && turn == "cpu") {
+        gameOver = true;
+    } else if (userDeck.length <= 0 && deck.length <= 0) {
+        gameOver = true;
+    } else if (cpuDeck.length <= 0 && deck.length <= 0) {
+        gameOver = true;
+    }
+}
+
+function checkWinner() {
+    if (userBooks > cpuBooks) {
+        document.getElementById("feedback-text").innerHTML = "Game Over. You Won the Game!";
+    } else if (userBooks < cpuBooks) {
+        document.getElementById("feedback-text").innerHTML = "Game Over. CPU Won the Game.";
+    } else {
+        document.getElementById("feedback-text").innerHTML = "Game Over. You and the CPU Tied the Game.";
     }
 }
 
@@ -239,7 +308,7 @@ function main(card) {
         console.log("User: " + userDeck);
         console.log("Cpu: " + cpuDeck);
         gameStart = false;
-    } else if (isUserTurn) {
+    } else if (isUserTurn && !gameOver) {
         userTurn(card);
         isUserTurn = false;
     }
