@@ -7,6 +7,7 @@ let gameStart = true;
 let isUserTurn = true;
 let gameOver = false;
 let turn = "user";
+let btn = document.getElementById("play-again");
 
 function buildDeck() {
     let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -189,6 +190,7 @@ function checkUserBooks() {
                     document.getElementById("feedback-text").innerHTML = "You Went Fishing Because You Had No Cards.";
                 } else {
                     setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+                    btn.disabled = false;
                 }
             }
         } else if (turn === "cpu") {
@@ -204,6 +206,7 @@ function checkUserBooks() {
                 checkWinner();
             } else {
                 document.getElementById("feedback-text").innerHTML = "Your Turn!";
+                btn.disabled = false;
                 isUserTurn = true;
             }
         } else if (turn = "cpu") {
@@ -250,8 +253,8 @@ function checkCpuBooks() {
             if (gameOver) {
                 checkWinner();
             } else {
-                
                 setTimeout(function() {document.getElementById("feedback-text").innerHTML = "Your Turn!"; isUserTurn = true;}, 3000);
+                btn.disabled = false;
             }
         } else if (turn === "cpu") {
             if (gameOver) {
@@ -266,6 +269,7 @@ function checkCpuBooks() {
                 checkWinner();
             } else {
                 document.getElementById("feedback-text").innerHTML = "Your Turn!";
+                btn.disabled = false
                 isUserTurn = true;
             }
         } else if (turn = "cpu") {
@@ -298,6 +302,31 @@ function checkWinner() {
     } else {
         document.getElementById("feedback-text").innerHTML = "Game Over. You and the CPU Tied the Game.";
     }
+    btn.disabled = false;
+}
+
+function playAgain() {
+    for (let i = userDeck.length - 1; i >= 0; i--) {
+        let userCardImg = document.getElementById(userDeck[i]);
+        userCardImg.remove();
+    }
+
+    for (let i = cpuDeck.length - 1; i >= 0; i--) {
+        let cpuCardImg = document.getElementById(cpuDeck[i]);
+        cpuCardImg.remove();
+    }
+
+    deck = [];
+    userDeck = [];
+    cpuDeck = [];
+    userBooks = 0;
+    cpuBooks = 0;
+    gameStart = true;
+    isUserTurn = true;
+    gameOver = false;
+    turn = "user";
+    
+    main();
 }
 
 function main(card) {
@@ -305,10 +334,12 @@ function main(card) {
         buildDeck();
         shuffleDeck();
         assignCards();
+        document.getElementById("feedback-text").innerHTML = "Play Go Fish";
         console.log("User: " + userDeck);
         console.log("Cpu: " + cpuDeck);
         gameStart = false;
     } else if (isUserTurn && !gameOver) {
+        btn.disabled = true;
         userTurn(card);
         isUserTurn = false;
     }
