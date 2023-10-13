@@ -1,6 +1,7 @@
 body {
     background-color: rgb(39, 39, 39);
 }
+
 img {
     width: 120px; 
     height: auto;
@@ -9,46 +10,72 @@ img {
 h1 {
     color: rgb(150, 0, 0);
     font-size: 50px;
-    margin: 0;
     font-family: Copperplate;
-    text-align: center;
+    margin: 0;
 }
 
 .container {
+    text-align: center;
     width: 100%;
-    margin-right: auto;
     margin-left: auto;
+    margin-right: auto;    
 }
 
 #userDeck, #cpuDeck {
     background-color: rgb(106, 106, 106);
-    min-height: 200px;
+    border: 5px solid rgb(150, 0, 0);
     width: 90%;
     height: auto;
-    margin-right: auto;
+    min-height: 200px;
     margin-left: auto;
-    border: 5px solid rgb(150, 0, 0);
+    margin-right: auto;
 }
 
 #feedback {
     background-color: rgb(150, 0, 0);
-    font-family: Copperplate;
-    height: 30px;
-    width: 90%;
-    margin: auto;
     border: 5px solid rgb(150, 0, 0);
-    text-align: center;
-    line-height: 0px;
     font-size: 25px;
+    font-family: Copperplate;
+    width: 90%;
+    height: 30px;
+    line-height: 0px;
+    margin: auto;
 }
 
 #scoreboard {
     background-color: rgb(106, 106, 106);
-    text-align: center;
-    width: 75%;
-    margin-right: auto;
-    margin-left: auto;
     border: 5px solid rgb(150, 0, 0);
-    font-family: Copperplate;
     font-size: 25px;
+    font-family: Copperplate;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.button {
+    color: black;
+    background-color: rgb(150, 0, 0);
+    border: none;
+    border-radius: 15px;
+    font-size: 25px;
+    font-family: Copperplate;
+    width: 25%;
+    margin-top: 10px;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px;
+}
+
+.button:hover {
+    background-color: rgb(100, 0, 0)
+}
+
+.button:active {
+    background-color: rgb(100, 0, 0);
+    box-shadow: 0 5px;
+    transform: translateY(5px);
+}
+
+.button:disabled {
+    opacity: 0.3;
 }
