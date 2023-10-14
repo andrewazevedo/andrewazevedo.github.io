@@ -321,6 +321,8 @@ function playAgain() {
     cpuDeck = [];
     userBooks = 0;
     cpuBooks = 0;
+    document.getElementById("user-score").innerHTML = userBooks;
+    document.getElementById("cpu-score").innerHTML = cpuBooks;
     gameStart = true;
     isUserTurn = true;
     gameOver = false;
